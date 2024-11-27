@@ -17,3 +17,5 @@ ID : root
 PWD : 0000
 
 (DBConnection.java에서 자기자신의 mysql정보 입력)
+
+Library_sql.txt   위에서 순서대로 실행 (맨처음 mydbs삭제 sql문이 있으니 조심)
