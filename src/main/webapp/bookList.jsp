@@ -1,0 +1,224 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
+<style>
+	body{
+		text-align: center;
+	}
+#main {
+    display: flex;
+    flex-direction: column; /* 각 버튼이 세로 방향으로 나열 */
+    align-items: center; /* 버튼들이 가운데 정렬 */
+    gap: 20px; /* 버튼 사이의 간격 */
+}
+
+button {
+    display: flex;
+    flex-direction: row; /* 버튼 내 요소들이 가로 방향으로 배치 */
+    align-items: flex-start; /* 이미지와 텍스트들이 상단 정렬 */
+    justify-content: space-between; /* 요소들을 양쪽으로 정렬 */
+    position: relative; /* 오른쪽 하단 위치를 위한 상대 위치 설정 */
+    padding: 15px;
+    width: 90%; /* 버튼의 너비를 적절히 조정 */
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #008D62;
+    font-size: 18px;
+    font-family: 'Nanum Gothic Coding', sans-serif;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+button img {
+    width: 150px; /* 이미지 크기 조정 */
+    height: 180px;
+    margin-right: 15px; /* 이미지와 텍스트 사이의 간격 */
+}
+
+button .details {
+    display: flex;
+    flex-direction: column; /* 텍스트들이 세로로 정렬 */
+    justify-content: flex-start;
+    flex-grow: 1; /* 남는 공간을 차지 */
+    position: relative; /* 오른쪽 하단 위치를 위한 상대 위치 설정 */
+}
+
+button .title {
+    display: flex;
+    flex-direction: row; /* titleId와 책제목이 가로로 정렬 */
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    width: 100%; /* 너비를 가득 채움 */
+}
+
+button .bottom-info {
+    position: absolute; /* 버튼의 오른쪽 하단에 고정 */
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column; /* 텍스트들이 세로로 정렬 */
+    align-items: flex-end; /* 오른쪽 정렬 */
+}
+
+button p {
+    margin: 0 0 5px 0; /* 각 요소 간의 간격 */
+}
+button .title {
+    display: flex;
+    flex-direction: column; /* titleId, 책제목, 출판년도 순서로 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    justify-content: flex-start;
+    width: 100%; /* 너비를 가득 채움 */
+}
+
+button .title p {
+    margin: 5px 0; /* 요소 간의 간격 */
+}
+
+
+
+	p *{
+		display: inline-block;
+	}
+</style>
+<script>
+	// 서버에서 데이터 가져오기
+	var request = null;
+	function createRequest(){
+		try{
+			request = new XMLHttpRequest();
+		}catch(failed){
+			request = null;
+		}
+		if(request == null){
+			alert("Error creating request object!");
+		}
+		
+	}
+	
+	function loadData() {
+		createRequest();
+		var url = "book.jsp";
+		request.open("GET", url, true);			
+		request.onreadystatechange = updatePage;		
+		request.send(null);
+	}
+	
+	function updatePage() {
+	    if (request.readyState == 4) {
+	        var response = request.responseText;
+	        var rows = response.split("<br>");
+	        var main1 = document.getElementById('main');
+
+	        for (var i = 0; i < rows.length - 1; i++) {
+	            var rowData = rows[i].split("&");
+	            if (rowData[0] != null) {
+	                rowData[0] = rowData[0].replaceAll("<br>+", ""); 
+	                rowData[0] = rowData[0].replaceAll("\\s{2,}", " ").trim(); 
+	            }
+	            var button1 = document.createElement("button");
+
+	            // 이미지 생성
+	            var img = document.createElement("img");
+	            img.src = "img/" + rowData[6] + ".png";
+
+	            // 텍스트 정보 컨테이너 생성
+	            var details = document.createElement("div");
+	            details.className = 'details';
+
+	            // 제목 ID와 책제목, 출판년도 를 한 줄로 배치
+	            var titleContainer = document.createElement("div");
+	            titleContainer.className = 'title';
+
+	            var imgld = document.createElement("p");
+	            imgld.innerText = rowData[0]; // 제목 ID
+	            imgld.style.fontWeight = 'bold';
+
+	            var titleld = document.createElement("p");
+	            titleld.innerText = rowData[1] + " / " + rowData[7]; // 책제목
+
+	            // 년도 추가
+	            var year = document.createElement("p");
+	            year.innerText = "출판년도: " + rowData[4]; // 출판년도
+
+	            var genre = document.createElement("p");
+	            genre.innerText = "장르 : "+ rowData[2];
+	            
+	            // titleContainer에 ID, 책제목, 출판년도 추가
+	            titleContainer.appendChild(imgld);
+	            titleContainer.appendChild(titleld);
+	            titleContainer.appendChild(year);
+	            titleContainer.appendChild(genre);
+	            // 보유 권수 생성
+	            var quantity = document.createElement("p");
+	            quantity.innerText = rowData[3] + "권 보유중";
+
+	            // 상태 생성
+	            var state = document.createElement("p");
+	            if (rowData[3] >= 1) {
+	                state.innerHTML = "대출 가능";
+	                state.style.color = "blue";
+	                state.style.fontWeight = "700";
+	            } else {
+	                state.innerHTML = "대출 불가";
+	                state.style.color = "red";
+	                state.style.fontWeight = "700";
+	            }
+
+	            // 요소들을 적절한 컨테이너에 추가
+	            details.appendChild(titleContainer);
+	            details.appendChild(quantity);
+	            details.appendChild(state);
+
+	            // 버튼의 오른쪽 하단에 위치할 정보 생성
+	            var bottomInfo = document.createElement("div");
+	            bottomInfo.className = 'bottom-info';
+	            bottomInfo.appendChild(quantity);
+	            bottomInfo.appendChild(state);
+
+	            // 버튼에 이미지와 상세 정보 추가
+	            button1.appendChild(img);
+	            button1.appendChild(details);
+	            button1.appendChild(bottomInfo);
+
+	            // 클릭 이벤트 추가
+	            button1.onclick = function (rowData) {
+	                return function () {
+	                    location.href = "itemDetail.html?" + rowData[0];
+	                };
+	            }(rowData);
+
+	            // 버튼을 메인 컨테이너에 추가
+	            main1.appendChild(button1);
+	        }
+	    }
+	}
+
+
+
+	// 페이지 로드 시 데이터 가져오기
+	window.onload = function() {
+    	loadData();
+    	
+	};
+</script>
+</head>
+<body>
+	<hr>
+	<div  id="main"></div >
+	<hr>
+
+
+</body>
+</html>
+
