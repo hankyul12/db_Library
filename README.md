@@ -1,14 +1,16 @@
-톰캣 10.1
+#톰캣 10.1
 
 https://tomcat.apache.org/download-10.cgi
+==============================================
+
+#mysql connector 8.0.22.jar사용
+
+src/main/webapp/WEB-INF/lib에 존재
+==============================================
 
 
-mysql connector 8.0.22.jar사용
-
-
-
-mysql 
-
+#mysql 
+==============================================
 ID : root 
 
 PWD : 0000
