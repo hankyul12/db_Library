@@ -2,6 +2,8 @@
 
 https://tomcat.apache.org/download-10.cgi
 
+https://dev-handbook.tistory.com/32
+
 ==============================================
 
 mysql connector 8.0.22.jar사용
