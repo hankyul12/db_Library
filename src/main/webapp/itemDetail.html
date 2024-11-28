@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table id="detail">
+    	<tr>
+        	<td rowspan="5" id="itemImg">
+            	<img id="img1" src="" alt="상품 이미지" height="480" width="300">
+        	</td>
+        	<td>
+            	<h2 id='title'>게시글 제목</h2>
+        	</td>
+    	</tr>
+    	<tr>
+        	<td>
+            	<h3 id ="author" class="text"> 작가 : <span id='authorSpan'></span></h3>
+        	</td>
+    	</tr>
+    	<tr>
+        	<td>
+            	<p id='genre' class="text">장르 : <span id='genreSpan'></span></p>
+        	</td>
+    	</tr>
+    	<tr>
+        	<td>
+            	<h2 id='quantity' class="text">보유 개수 :</h2>
+        	</td>
+    	</tr>
+    	<tr>
+        	<td>
+            	<button id="loan" onclick="loan()" class="text">대출하기</button>
+            	<button id="reservation" onclick="reservation()" class="text" >예약하기</button>
+        	</td>
+    	</tr>
+	</table>
+</body>
+<script>
+	window.onload = function() {
+		var temp = location.href.split("?");
+		var data = temp[1].split(",");
+		var value1 = data[0];
+	
+		var aimg = document.getElementById("img1");
+		aimg.src= "img/"+value1+'.png';
+	
+	
+		myid = value1;
+		createRequest();
+		var url = "itemDetail.jsp?id="+myid;
+		request.open("GET", url, true);
+		request.onreadystatechange = updatePage;
+		request.send(null);
+	};
+
+
+	function createRequest(){
+	 try{
+	    request = new XMLHttpRequest();
+	 }catch(failed){
+	    request = null;
+	 }
+	 if(request == null){
+	    alert("Error creating request object!");
+	 }
+	
+	}
+
+
+	function updatePage(){      
+ 	 if(request.readyState == 4){
+		 var title = document.getElementById('title');
+		 var genre = document.getElementById('genreSpan');
+		 var author = document.getElementById('authorSpan');
+		 var loan_button= document.getElementById("loan");
+		 var reservation_button = document.getElementById("reservation");
+		 
+ 	    var rows = request.responseText;
+ 	    var rowData = rows.split("&"); // 각 열의 데이터를 분리합니다.
+ 	    title.innerText=rowData[1];
+ 	   	genre.innerText = rowData[2];
+ 	    author.innerText += rowData[7];
+ 	    quantity.innerText += rowData[3];
+
+		if(rowData[3] > 0){
+			quantity.innerText += "권 / 대출 가능";
+			reservation_button.disabled = true;
+		}
+		else{
+			quantity.innerText += "권 / 예약 가능";
+			loan_button.disabled = true;
+		}
+	  }
+	}
+</script>
+</html>
