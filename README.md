@@ -10,6 +10,10 @@ mysql connector 8.0.22.jar사용
 
 src/main/webapp/WEB-INF/lib에 존재
 
+Java Build Path -> Libraries , Modulepath에서
+이미 있는 mysql connector 삭제후
+자신의 워크스페이스에서 jar 적용
+
 ==============================================
 
 mysql 
