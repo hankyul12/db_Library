@@ -3,7 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+function loan() {
+    // 상품 ID와 사용자 ID를 가져옵니다.
+    var temp = location.href.split("?");
+    var data = temp[1].split(",");
+    var bookid = data[0];  // 상품 ID
+    var myid = localStorage.getItem('id');  // 사용자 ID (localStorage에서 가져오기)
+
+    if (!myid) {
+        alert("로그인된 사용자가 없습니다. 로그인후 대출해주세요!");
+        return;
+    }
+
+    // XMLHttpRequest 객체를 생성합니다.
+    var request = new XMLHttpRequest();
+
+    // 대출 요청을 보낼 URL (bookid와 myid를 파라미터로 추가)
+    var url = "loan.jsp?id=" + bookid + "&memberId=" + myid;
+
+    // GET 방식으로 요청을 보냅니다.
+    request.open("GET", url, true);
+
+    // 요청 상태 변화에 따라 처리
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {  // 요청 완료
+            if (request.status == 200) {  // 응답 성공
+                var response = request.responseText;
+				alert(response);
+                if (response.trim() === "true") {
+                    alert("대출이 완료되었습니다.");
+                } else {
+                    alert("대출 실패. 다시 시도해주세요.");
+                }
+            } else {
+                alert("서버와의 통신에 실패했습니다. 다시 시도해주세요.");
+            }
+        }
+    };
+
+    // 요청 전송
+    request.send(null);
+}
+</script>
 </head>
+
 <body>
 <table id="detail">
     	<tr>
@@ -94,5 +138,7 @@
 		}
 	  }
 	}
+	
+
 </script>
 </html>

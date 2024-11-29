@@ -3,7 +3,7 @@ package db;
 import java.sql.*;
 
 public class LoanDAO {
-    public boolean processLoan(int memberId, int bookId, String loanDate) {
+    public boolean processLoan(String memberId, int bookId) {
         String query = "SELECT Quantity FROM Book WHERE Book_ID = ?";
         String updateQuery = "UPDATE Book SET Quantity = Quantity - 1 WHERE Book_ID = ?";
         String insertLoan = "INSERT INTO Loan (Book_ID, Member_ID, Loan_Date, Is_Overdue) VALUES (?, ?, ?, FALSE)";
@@ -20,13 +20,13 @@ public class LoanDAO {
                         updateStmt.executeUpdate();
                     }
 
-                    // loanDate를 java.sql.Date로 변환
-                    Date sqlLoanDate = Date.valueOf(loanDate); 
+                    // 현재 시간을 java.sql.Date로 변환 (현재 날짜와 시간을 대출일로 설정)
+                    Date sqlLoanDate = new Date(System.currentTimeMillis()); 
 
                     // 대출 정보 삽입
                     try (PreparedStatement insertStmt = connection.prepareStatement(insertLoan)) {
                         insertStmt.setInt(1, bookId);
-                        insertStmt.setInt(2, memberId);
+                        insertStmt.setString(2, memberId);
                         insertStmt.setDate(3, sqlLoanDate);
                         insertStmt.executeUpdate();
                     }
