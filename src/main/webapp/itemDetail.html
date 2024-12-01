@@ -3,6 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+    /* 페이지 기본 스타일 */
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        height: 100vh; /* 화면 세로 크기에 맞춤 */
+        overflow: auto;
+    }
+
+    /* 상품 상세 페이지 테이블 */
+    #detail {
+        border: 10px solid #D5D5D5;
+        margin: 20px;
+        width: 70%; /* 너비를 더 줄여서 적당히 작은 비율로 */
+        border-radius: 30px;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 15px; /* 내부 여백 추가 */
+    }
+
+    /* 이미지 부분 */
+    #itemImg {
+        width: 35%; /* 이미지 영역 크기 더 축소 */
+        border-right: 2px dashed black;
+        padding-right: 10px;
+        text-align: center;
+    }
+
+    #img1 {
+        width: 80%; /* 이미지 크기 줄이기 */
+        height: auto;
+        margin: 10px 0;
+    }
+
+    /* 제목 및 기타 정보 */
+    #title {
+        font-family: 'Gothic A1', sans-serif;
+        font-size: 40px; /* 제목 크기 크게 */
+        font-weight: 800;
+        text-align: center; /* 제목 가운데 정렬 */
+        margin-top: 20px;
+    }
+
+    .text {
+        font-size: 20px; /* 텍스트 크기 크게 */
+        margin-top: 10px;
+        text-align: center; /* 텍스트 가운데 정렬 */
+    }
+
+    #genre, #author {
+        font-size: 24px; /* 글자 크기 크게 */
+        margin-top: 10px;
+        text-align: center; /* 텍스트 가운데 정렬 */
+    }
+
+    #quantity {
+        font-size: 24px; /* 크기 크게 */
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center; /* 텍스트 가운데 정렬 */
+    }
+
+    /* 버튼 스타일 */
+    button {
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 45%; /* 버튼 크기 조정 */
+        height: 50px; /* 버튼 높이 늘리기 */
+        font-size: 20px; /* 버튼 폰트 크기 크게 */
+        font-weight: bold;
+        border-radius: 40px;
+        background-color: #c73d3d;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        margin-bottom: 10px; /* 버튼 간격 줄이기 */
+        display: inline-block;
+    }
+
+    button:hover {
+        transform: translateY(-5px);
+        background-color: #AE3A1E;
+    }
+
+    button:disabled {
+        background-color: #d3d3d3;
+        cursor: not-allowed;
+    }
+
+    /* 입력 필드 스타일 */
+    #id, #address, #discountPrice, #buy_id, #buy_address {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px; /* 필드 간격 줄이기 */
+        border: 1px solid #c73d3d;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 18px; /* 필드 텍스트 크기 크게 */
+    }
+
+    /* 버튼 스타일 */
+    #confirmBtn, #buyBtn_dialog, #closeBtn {
+        width: 96%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 20px; /* 버튼 크기 적당히 크게 */
+        background-color: #c73d3d;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center; /* 버튼 텍스트 가운데 정렬 */
+    }
+
+    #confirmBtn:hover, #buyBtn_dialog:hover, #closeBtn:hover {
+        background-color: #AE3A1E;
+    }
+
+</style>
+
+
 <script>
 
 	function loan() {
