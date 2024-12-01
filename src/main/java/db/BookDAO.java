@@ -65,7 +65,7 @@ public class BookDAO {
         
         return temp;
     }
-    public String getBook_title(String Book_title) throws SQLException {
+    public String getBook_title(String Book_title, String searchText) throws SQLException {
     	 String query = "SELECT b.*, a.Name FROM Author a " +
                  "JOIN Writing w ON a.Author_ID = w.Author_ID " +
                  "JOIN Book b ON w.Book_ID = b.Book_ID " +
@@ -98,4 +98,39 @@ public class BookDAO {
          
          return temp;
      }
+    
+    public String getBook_search(String searchType, String searchText) throws SQLException {
+        String query = "SELECT b.*, a.Name FROM Author a " +
+                "JOIN Writing w ON a.Author_ID = w.Author_ID " +
+                "JOIN Book b ON w.Book_ID = b.Book_ID " +
+                "WHERE " + searchType + " LIKE ?";
+	 String temp = "";
+     
+     // 연결, PreparedStatement, ResultSet을 사용하여 쿼리 실행
+     try (Connection connection = DBConnection.getConnection();
+          PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+         pstmt.setString(1, "%"+searchText+"%");
+         
+         try (ResultSet resultSet = pstmt.executeQuery()) {
+             while (resultSet.next()) {
+                 int bookId = resultSet.getInt("Book_ID");
+                 String title = resultSet.getString("Title");
+                 String genre = resultSet.getString("Genre");
+                 int quantity = resultSet.getInt("Quantity");
+                 int publicationYear = resultSet.getInt("Publication_Year");
+                 int publisherId = resultSet.getInt("Publisher_ID");
+                 String img_book = resultSet.getString("Img_Book");
+                 String author = resultSet.getString("Name");
+                 
+                 temp += bookId + "&" + title + "&" + genre + "&" + quantity + "&" + publicationYear + "&" +
+                        publisherId + "&" + img_book + "&" + author;
+                 temp += "<br>";
+
+                 }
+         }
+     }
+     
+     return temp;
+ }
 }

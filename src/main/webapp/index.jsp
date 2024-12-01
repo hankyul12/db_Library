@@ -65,13 +65,18 @@
         }
 
         #searchInput {
-			margin-left : 10px;
             width: 95%;
             height: 80%;
             border-radius: 40px;
             border: 3px solid black;
         }
-
+		#searchType{
+			width: 85%;
+		    height: 80%;
+		    border-radius: 40px;
+		    border: 3px solid black;
+		    
+		}
         #searchButton {
             width: 40%;
             height: 80%;
@@ -97,7 +102,7 @@
            
         }
 
-        #mypage, #login, #loginButton, #searchInput, #searchButton {
+        #mypage, #login, #loginButton, #searchInput, #searchButton, #searchType {
             box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
             font-size: 22px;            
             
@@ -119,6 +124,12 @@
         <div>
             <table id="func">
                 <tr>
+                    <td>
+                        <select class="funcText"  name="languages" id="searchType">
+							<option value="title">제목</option>
+							<option value="Genre">장르</option>
+					</select>
+					</td>
                     <td>
                         <input type="text" id="searchInput" class="funcText" placeholder="검색어를 입력하세요"> <!-- 검색 입력창 -->
                     </td>
@@ -146,7 +157,10 @@
 			if(searchtext==""){
 				document.getElementById('bookList').src="bookList.jsp"
 			}else{
-				document.getElementById('bookList').src="searchbookList.html?"+searchtext;
+				var searchType = document.getElementById('searchType').value;
+				//document.getElementById('bookList').src="searchbookList.html?"+searchtext;
+
+				document.getElementById('bookList').src="searchbookList.html?searchtext="+searchtext+"&searchType="+searchType; 
 			}
 		}
 		function mainpage(){

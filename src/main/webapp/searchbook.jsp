@@ -8,9 +8,12 @@
 	String title = request.getParameter("text");
 	title.trim();
 	
+	String type = request.getParameter("type");
+	type.trim();
+	
 	BookDAO bookDAO = new BookDAO();
-	String temp = bookDAO.getBook_title(title);
-	temp.trim();
-	out.print(temp);
+	String temp = bookDAO.getBook_search(type, title);
+	out.println(temp);
+			
 %>
 	

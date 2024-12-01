@@ -91,7 +91,7 @@ button .title p {
 <script>
 	// 서버에서 데이터 가져오기
 	var request = null;
-	var data = null;
+	var searchtext = null;
 	function createRequest(){
 		try{
 			request = new XMLHttpRequest();
@@ -106,7 +106,7 @@ button .title p {
 	
 	function loadData() {
 		createRequest();
-		var url = "searchbook.jsp?text="+data;
+		var url = "searchbook.jsp?text="+searchtext+"&type="+searchType;
 
 		request.open("GET", url, true);
 		request.onreadystatechange = updatePage;		
@@ -207,9 +207,12 @@ button .title p {
 	// 페이지 로드 시 데이터 가져오기
 	window.onload = function() {
 		var temp = location.href.split("?");
-		data = temp[1].split(",");
+		var data = temp[1].split("&");
+		
+		searchtext = (data[0].split("="))[1];
+		searchType = (data[1].split("="))[1];
+
     	loadData();
-    	
 	};
 </script>
 </head>
